@@ -9,23 +9,19 @@ void setup()
   createChaoticGon();
   background(0);
 
-  size(720, 720);
-  colorMode(HSB, 255, 255, 255);
+  size(720, 720, P2D);
+  colorMode(HSB, 360, 255, 255);
 }
 
 void createChaoticGon()
 {
-  var phi = (1 + sqrt(5)) / 2;
-  var sideNumber = 5;
-  var radius = 321;
-  var percentage = 0.36 * phi;
-  int generationSpeed = 123;
+  var numberOfSides = 5;
+  var radius = 321f;
 
-  chaoticGon = new ChaoticGon(radius, sideNumber,
-    percentage, generationSpeed);
+  chaoticGon = new ChaoticGon(radius, numberOfSides);
 }
 
 void draw()
 {
-  chaoticGon.generate();
+  chaoticGon.render();
 }
