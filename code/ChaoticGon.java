@@ -4,8 +4,8 @@ class ChaoticGon
   private Utility utility;
 
   private Polygon polygon;
-  private int currentIndex;
   private int previousIndex;
+  private int intersections;
   private PVector currentPoint;
 
   private int generationSpeed;
@@ -16,8 +16,8 @@ class ChaoticGon
     this.utility = new Utility();
 
     this.polygon = new Polygon(numberOfSides, radius);
-    this.currentIndex = 0;
     this.previousIndex = 0;
+    this.intersections = 0;
     var posX = random(width);
     var posY = random(height);
     this.currentPoint = new PVector(posX, posY);
@@ -32,10 +32,10 @@ class ChaoticGon
 
     for (int s = 0; s < this.generationSpeed; s++)
     {
-      this.currentIndex = (int)random(this.polygon.getSides());
-      this.pickRandomVertice();
-      this.previousIndex = this.currentIndex;
-      var randomVertice = this.polygon.getVertice(this.currentIndex);
+      var currentIndex = (int)random(this.polygon.getSides());
+      currentIndex = this.pickRandomVertice(currentIndex);
+      this.previousIndex = currentIndex;
+      var randomVertice = this.polygon.getVertice(currentIndex);
 
       var percentage = 1f/2;
       this.currentPoint = this.utility.lerpedPoint(this.currentPoint,
@@ -45,10 +45,57 @@ class ChaoticGon
     }
   }
 
-  private void pickRandomVertice()
+  private int pickRandomVertice(int currentIndex)
   {
-    while (this.currentIndex == this.previousIndex)
-      this.currentIndex = (int)random(this.polygon.getSides());
+    /*
+     * According to this rule of the chaos
+     * game, the currently chosen vertex, can't
+     * be the same as the previously chosen
+     * vertex.
+     *
+     * --> numberOfSides = 5
+     */
+    //while (currentIndex == this.previousIndex)
+    //  currentIndex = (int)random(this.polygon.getSides());
+
+    /*
+     * According to this rule of the chaos
+     * game, the currently chosen vertex, can't
+     * be 2 places away from the previously
+     * chosen vertex.
+     *
+     * --> numberOfSides = 4
+     */
+    var indices = new int[2];
+    indices[0] = currentIndex;
+    indices[1] = this.previousIndex;
+
+    var params = new int[2];
+    params[0] = 1;
+    params[1] = this.polygon.getSides();
+    while (this.utility.differBy(indices, params))
+    {
+      currentIndex = (int)random(this.polygon.getSides());
+      indices[0] = currentIndex;
+    }
+
+    /*
+     * According to this rule of the chaos
+     * game, the currently chosen vertex, can't
+     */
+
+    //if (this.previousIndex == currentIndex)
+    //  this.intersections++;
+
+    //if (this.intersections == 2)
+    //{
+    //  while (abs(currentIndex - this.previousIndex) != 1)
+    //    currentIndex = (int)random(this.polygon.getSides());
+
+    //  this.intersections = 0;
+    //}
+
+    return currentIndex;
   }
 
   private void renderPoint()
