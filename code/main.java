@@ -15,7 +15,7 @@ void setup()
 
 void createChaoticGon()
 {
-  var numberOfSides = 5;
+  var numberOfSides = 6;
   var radius = 321f;
 
   chaoticGon = new ChaoticGon(radius, numberOfSides);
