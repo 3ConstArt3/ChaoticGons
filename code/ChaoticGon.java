@@ -35,7 +35,16 @@ class ChaoticGon
       this.previousIndex = currentIndex;
       var randomVertice = this.polygon.getVertice(currentIndex);
 
-      var percentage = 1f/2;
+      /* 
+       * Ideal percentages, for some beautiful
+       * results - some depend on the number of
+       * vertices of the polygon - are given below:
+       *
+       * --> 1f/2
+       * --> 2f/3
+       * --> 3f/5
+       */
+      var percentage = 3f/5;
       this.currentPoint = this.utility.lerpedPoint(this.currentPoint,
         randomVertice, percentage);
 
